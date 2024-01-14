@@ -4,6 +4,9 @@ import notebook.controller.UserController;
 import notebook.model.User;
 import notebook.util.Commands;
 
+import javax.sound.sampled.Line;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class UserView {
@@ -13,7 +16,7 @@ public class UserView {
         this.userController = userController;
     }
 
-    public void run(){
+    public void run() {
         Commands com;
 
         while (true) {
@@ -22,8 +25,7 @@ public class UserView {
             if (com == Commands.EXIT) return;
             switch (com) {
                 case CREATE:
-                    User u = createUser();
-                    userController.saveUser(u);
+                    userController.create();
                     break;
                 case READ:
                     String id = prompt("Идентификатор пользователя: ");
@@ -37,7 +39,13 @@ public class UserView {
                     break;
                 case UPDATE:
                     String userId = prompt("Enter user id: ");
-                    userController.updateUser(userId, createUser());
+                    userController.updateUser(userId, userController.create());
+                case LIST:
+                    System.out.println(userController.readAll());
+                    break;
+                case DELETE:
+                    String delete = prompt("Enter user id: ");
+                    userController.delete(Long.valueOf(delete));
             }
         }
     }
@@ -46,12 +54,5 @@ public class UserView {
         Scanner in = new Scanner(System.in);
         System.out.print(message);
         return in.nextLine();
-    }
-
-    private User createUser() {
-        String firstName = prompt("Имя: ");
-        String lastName = prompt("Фамилия: ");
-        String phone = prompt("Номер телефона: ");
-        return new User(firstName, lastName, phone);
     }
 }

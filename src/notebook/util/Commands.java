@@ -2,7 +2,7 @@ package notebook.util;
 
 public enum Commands {
     NONE,
-    READ,
+    READ ,
     CREATE,
     UPDATE,
     LIST,
